@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
@@ -95,6 +96,7 @@ st.sidebar.markdown("**Saddam Bin Matin**")
 st.sidebar.markdown("[LinkedIn Profile](https://linkedin.com/in/saddam-bin-matin)")
 st.sidebar.markdown("[Research Paper](https://doi.org/10.5281/zenodo.18215181)")
 st.sidebar.markdown("---")
+
 
 
 
