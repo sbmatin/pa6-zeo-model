@@ -66,11 +66,35 @@ elif zeolite_pct > 40:
 else:
     st.info("ℹ️ **Low Loading:** Material behaves similarly to neat PA6 with minor reinforcement.")
 
+from sklearn.metrics import r2_score
+
+y_h_true = np.array([85.40, 87.82, 90.37, 92.18, 95.54])
+y_u_true = np.array([54.51, 56.90, 65.70, 53.16, 42.72])
+
+y_h_pred = model_h.predict(X)
+y_u_pred = model_u.predict(X)
+
+r2_hardness = r2_score(y_h_true, y_h_pred)
+r2_uts = r2_score(y_u_true, y_u_pred)
+
+print(f"R² for Hardness: {r2_hardness:.4f}")
+print(f"R² for UTS:      {r2_uts:.4f}")
+
+comparison_df = pd.DataFrame({
+    'Zeolite wt%': [0, 20, 40, 50, 60],
+    'Exp. UTS (MPa)': y_u_true,
+    'Model UTS (MPa)': np.round(y_u_pred, 2),
+    'Error (%)': np.round(np.abs((y_u_true - y_u_pred)/y_u_true)*100, 2)
+})
+print("\nValidation Table for UTS:")
+print(comparison_df)
+
 st.sidebar.markdown("---")
 st.sidebar.markdown("### Developed by")
 st.sidebar.markdown("**Saddam Bin Matin**")
 st.sidebar.markdown("[LinkedIn Profile](https://linkedin.com/in/saddam-bin-matin)")
 st.sidebar.markdown("[Research Paper](https://doi.org/10.5281/zenodo.18215181)")
 st.sidebar.markdown("---")
+
 
 
