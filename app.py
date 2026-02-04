@@ -90,12 +90,37 @@ comparison_df = pd.DataFrame({
 print("\nValidation Table for UTS:")
 print(comparison_df)
 
+from sklearn.metrics import r2_score
+
+y_h_true = np.array([85.40, 87.82, 90.37, 92.18, 95.54])
+y_u_true = np.array([54.51, 56.90, 65.70, 53.16, 42.72])
+
+y_h_model = model_h.predict(X)
+y_u_model = model_u.predict(X)
+
+r2_h = r2_score(y_h_true, y_h_model)
+r2_u = r2_score(y_u_true, y_u_model)
+
+st.sidebar.markdown("### Model Validation")
+st.sidebar.write(f"Hardness $R^2$: **{r2_h:.4f}**")
+st.sidebar.write(f"UTS $R^2$: **{r2_u:.4f}**")
+
+with st.expander("View Data Comparison Table (Model vs. Experimental)"):
+    comparison_df = pd.DataFrame({
+        'Zeolite (wt%)': [0, 20, 40, 50, 60],
+        'Exp. UTS (MPa)': y_u_true,
+        'Model UTS (MPa)': np.round(y_u_model, 2),
+        'Accuracy (%)': np.round(100 - (np.abs(y_u_true - y_u_model)/y_u_true)*100, 2)
+    })
+    st.table(comparison_df)
+
 st.sidebar.markdown("---")
 st.sidebar.markdown("### Developed by")
 st.sidebar.markdown("**Saddam Bin Matin**")
 st.sidebar.markdown("[LinkedIn Profile](https://linkedin.com/in/saddam-bin-matin)")
 st.sidebar.markdown("[Research Paper](https://doi.org/10.5281/zenodo.18215181)")
 st.sidebar.markdown("---")
+
 
 
 
