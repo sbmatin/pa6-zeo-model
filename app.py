@@ -66,3 +66,11 @@ elif zeolite_pct > 40:
 else:
     st.info("ℹ️ **Low Loading:** Material behaves similarly to neat PA6 with minor reinforcement.")
 
+st.sidebar.markdown("---")
+st.sidebar.markdown("### Developed by")
+st.sidebar.markdown("**Saddam Bin Matin**")
+st.sidebar.markdown("[LinkedIn Profile](https://linkedin.com/in/saddam-bin-matin)")
+st.sidebar.markdown("[Research Paper](https://doi.org/10.5281/zenodo.18215181)")
+st.sidebar.markdown("---")
+
+
