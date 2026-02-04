@@ -42,7 +42,7 @@ The easiest way to explore the model is through the live Streamlit Dashboard. Us
 2. Local Installation
 To run the model locally, follow these steps:
 
-Clone the repository: git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+Clone the repository: git clone https://github.com/sbmatin/pa6-zeo-model.git
 
 Install dependencies: pip install -r requirements.txt
 
@@ -61,5 +61,6 @@ If you use this model in your research, please cite the original paper: Matin, S
 Developed by: SADDAM BIN MATIN
 
 Connect with me on linkedin.com/in/saddam-bin-matin
+
 
 
