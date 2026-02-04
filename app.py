@@ -54,7 +54,7 @@ ax2.plot(X_seq_w, model_w.predict(X_seq_w), color='green', label='Wear Rate', li
 ax2.set_ylabel("Wear Rate ($10^{-9} mm^3/Nm$)", color='green')
 
 ax1.axvspan(20, 40, color='yellow', alpha=0.2, label='Optimal Performance Window')
-ax1.axvline(zeolite_pct, color='black', thickness=1)
+ax1.axvline(zeolite_pct, color='black', linewidth=1)
 
 fig.legend(loc="upper left", bbox_to_anchor=(0.15, 0.85))
 st.pyplot(fig)
@@ -65,3 +65,4 @@ elif zeolite_pct > 40:
     st.error("⚠️ **Warning:** Particle agglomeration likely. Wear rate increases drastically due to abrasive third-body particles.")
 else:
     st.info("ℹ️ **Low Loading:** Material behaves similarly to neat PA6 with minor reinforcement.")
+
