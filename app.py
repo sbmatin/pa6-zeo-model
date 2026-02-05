@@ -84,7 +84,7 @@ r2_uts = r2_score(y_u_true, y_u_pred)
 
 print(f"R² for Hardness: {r2_hardness:.4f}")
 print(f"R² for UTS:      {r2_uts:.4f}")
-print(f"Wear Rate R²: {r2_wear:.4f}")
+print(f" R² for Wear Rate: {r2_wear:.4f}")
 
 comparison_df = pd.DataFrame({
     'Zeolite wt%': [0, 20, 40, 50, 60],
@@ -109,7 +109,7 @@ r2_u = r2_score(y_u_true, y_u_model)
 st.sidebar.markdown("### Model Validation")
 st.sidebar.write(f"Hardness $R^2$: **{r2_h:.4f}**")
 st.sidebar.write(f"UTS $R^2$: **{r2_u:.4f}**")
-st.sidebar.write(f"🔹 Wear Rate: {r2_wear:.3f}")
+st.sidebar.write(f"Wear Rate $R^2$: {r2_wear:.3f}")
 
 with st.expander("View Data Comparison Table (Model vs. Experimental)"):
     comparison_df = pd.DataFrame({
@@ -126,6 +126,7 @@ st.sidebar.markdown("**Saddam Bin Matin**")
 st.sidebar.markdown("[LinkedIn Profile](https://linkedin.com/in/saddam-bin-matin)")
 st.sidebar.markdown("[Research Paper](https://doi.org/10.5281/zenodo.18215181)")
 st.sidebar.markdown("---")
+
 
 
 
