@@ -69,63 +69,71 @@ else:
 
 from sklearn.metrics import r2_score
 
-y_h_true = np.array([85.40, 87.82, 90.37, 92.18, 95.54])
-y_u_true = np.array([54.51, 56.90, 65.70, 53.16, 42.72])
-y_w_true = np.array([2.97, 10.28, 39.51, 63.78]) 
-X_w = np.array([0, 20, 40, 50]).reshape(-1, 1)
-y_w_model = model_w.predict(X_w)
-
-y_h_pred = model_h.predict(X)
-y_u_pred = model_u.predict(X)
-
-r2_wear = r2_score(y_w_true, y_w_model)
-r2_hardness = r2_score(y_h_true, y_h_pred)
-r2_uts = r2_score(y_u_true, y_u_pred)
-
-print(f"R² for Hardness: {r2_hardness:.4f}")
-print(f"R² for UTS:      {r2_uts:.4f}")
-print(f" R² for Wear Rate: {r2_wear:.4f}")
-
-comparison_df = pd.DataFrame({
-    'Zeolite wt%': [0, 20, 40, 50, 60],
-    'Exp. UTS (MPa)': y_u_true,
-    'Model UTS (MPa)': np.round(y_u_pred, 2),
-    'Error (%)': np.round(np.abs((y_u_true - y_u_pred)/y_u_true)*100, 2)
-})
-print("\nValidation Table for UTS:")
-print(comparison_df)
-
-from sklearn.metrics import r2_score
-
+# --- DATA PREPARATION FOR VALIDATION ---
+# 1. Experimental Data (Ground Truth)
+X_exp = np.array([0, 20, 40, 50, 60]).reshape(-1, 1)
 y_h_true = np.array([85.40, 87.82, 90.37, 92.18, 95.54])
 y_u_true = np.array([54.51, 56.90, 65.70, 53.16, 42.72])
 
-y_h_model = model_h.predict(X)
-y_u_model = model_u.predict(X)
+X_w_exp = np.array([0, 20, 40, 50]).reshape(-1, 1)
+y_w_true = np.array([2.97, 10.28, 39.51, 63.78])
 
-r2_h = r2_score(y_h_true, y_h_model)
-r2_u = r2_score(y_u_true, y_u_model)
+# 2. Model Predictions
+y_h_pred = model_h.predict(X_exp)
+y_u_pred = model_u.predict(X_exp)
+y_w_pred = model_w.predict(X_w_exp)
 
-st.sidebar.markdown("### Model Validation")
-st.sidebar.write(f"Hardness $R^2$: **{r2_h:.4f}**")
-st.sidebar.write(f"UTS $R^2$: **{r2_u:.4f}**")
-st.sidebar.write(f"Wear Rate $R^2$: {r2_wear:.3f}")
+# 3. Calculate Metrics
+r2_h = r2_score(y_h_true, y_h_pred)
+r2_u = r2_score(y_u_true, y_u_pred)
+r2_w = r2_score(y_w_true, y_w_pred)
 
-with st.expander("View Data Comparison Table (Model vs. Experimental)"):
-    comparison_df = pd.DataFrame({
+# --- SIDEBAR VALIDATION ---
+st.sidebar.markdown("### 📊 Model Confidence ($R^2$)")
+st.sidebar.write(f"🔹 Hardness: **{r2_h:.4f}**")
+st.sidebar.write(f"🔹 UTS: **{r2_u:.4f}**")
+st.sidebar.write(f"🔹 Wear Rate: **{r2_w:.4f}**")
+
+# --- MAIN PAGE: DATA COMPARISON TABLES ---
+st.markdown("---")
+st.subheader("📋 Experimental vs. Predicted Data")
+st.markdown("Comparison between laboratory measurements and the polynomial regression model outputs.")
+
+tab1, tab2, tab3 = st.tabs(["Hardness", "Tensile Strength (UTS)", "Wear Rate"])
+
+with tab1:
+    df_h = pd.DataFrame({
         'Zeolite (wt%)': [0, 20, 40, 50, 60],
-        'Exp. UTS (MPa)': y_u_true,
-        'Model UTS (MPa)': np.round(y_u_model, 2),
-        'Accuracy (%)': np.round(100 - (np.abs(y_u_true - y_u_model)/y_u_true)*100, 2)
+        'Experimental (Shore D)': y_h_true,
+        'Model (Shore D)': np.round(y_h_pred, 2),
+        'Error (%)': np.round(np.abs(y_h_true - y_h_pred)/y_h_true * 100, 2)
     })
-    st.table(comparison_df)
+    st.dataframe(df_h, use_container_width=True)
 
+with tab2:
+    df_u = pd.DataFrame({
+        'Zeolite (wt%)': [0, 20, 40, 50, 60],
+        'Experimental (MPa)': y_u_true,
+        'Model (MPa)': np.round(y_u_pred, 2),
+        'Error (%)': np.round(np.abs(y_u_true - y_u_pred)/y_u_true * 100, 2)
+    })
+    st.dataframe(df_u, use_container_width=True)
+
+with tab3:
+    df_w = pd.DataFrame({
+        'Zeolite (wt%)': [0, 20, 40, 50],
+        'Experimental (10⁻⁹)': y_w_true,
+        'Model (10⁻⁹)': np.round(y_w_pred, 2),
+        'Error (%)': np.round(np.abs(y_w_true - y_w_pred)/y_w_true * 100, 2)
+    })
+    st.dataframe(df_w, use_container_width=True)
 st.sidebar.markdown("---")
 st.sidebar.markdown("### Developed by")
 st.sidebar.markdown("**Saddam Bin Matin**")
 st.sidebar.markdown("[LinkedIn Profile](https://linkedin.com/in/saddam-bin-matin)")
 st.sidebar.markdown("[Research Paper](https://doi.org/10.5281/zenodo.18215181)")
 st.sidebar.markdown("---")
+
 
 
 
