@@ -131,8 +131,9 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("### Developed by")
 st.sidebar.markdown("**Saddam Bin Matin**")
 st.sidebar.markdown("[LinkedIn Profile](https://linkedin.com/in/saddam-bin-matin)")
-st.sidebar.markdown("[Research Paper](https://doi.org/10.5281/zenodo.18215181)")
+st.sidebar.markdown("[Research Paper:EXPERIMENTAL AND COMPUTATIONAL INVESTIGATION OF THE TRIBOLOGICAL AND MECHANICAL BEHAVIOUR OF ZEOLITE-FILLED POLYAMIDE-6 COMPOSITES: A PREDICTIVE MODELING APPROACH](https://doi.org/10.5281/zenodo.18496332)")
 st.sidebar.markdown("---")
+
 
 
 
