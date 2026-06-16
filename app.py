@@ -46,18 +46,28 @@ X_seq = np.linspace(0, 60, 100).reshape(-1, 1)
 fig, ax1 = plt.subplots(figsize=(12, 5))
 ax2 = ax1.twinx()
 
+# Plot fitted curves
 ax1.plot(X_seq, model_u.predict(X_seq), color='red', label='UTS (Strength)', linewidth=2)
 ax1.plot(X_seq, model_h.predict(X_seq), color='blue', linestyle='--', label='Hardness')
+
+# Plot experimental data points on curves
+ax1.scatter(X.flatten(), y_uts, color='red', zorder=5, s=50, edgecolors='black', linewidths=0.5)
+ax1.scatter(X.flatten(), y_hardness, color='blue', zorder=5, s=50, edgecolors='black', linewidths=0.5)
+
 ax1.set_ylabel("Mechanical Properties (MPa / Shore D)")
+ax1.set_xlabel("Zeolite Content (%)")
 
 X_seq_w = np.linspace(0, 55, 100).reshape(-1, 1)
 ax2.plot(X_seq_w, model_w.predict(X_seq_w), color='green', label='Wear Rate', linewidth=3)
+ax2.scatter(X_wear.flatten(), y_wear, color='green', zorder=5, s=50, edgecolors='black', linewidths=0.5)
 ax2.set_ylabel("Wear Rate ($10^{-9} mm^3/Nm$)", color='green')
 
 ax1.axvspan(20, 40, color='yellow', alpha=0.2, label='Optimal Performance Window')
 ax1.axvline(zeolite_pct, color='black', linewidth=1)
 
-fig.legend(loc="upper left", bbox_to_anchor=(0.15, 0.85))
+# Place legend outside plot area (below) to avoid blocking lines
+fig.legend(loc="lower center", bbox_to_anchor=(0.5, -0.05), ncol=4, framealpha=0.7, edgecolor='gray')
+fig.tight_layout(rect=[0, 0.05, 1, 1])
 st.pyplot(fig)
 
 if 20 <= zeolite_pct <= 40:
