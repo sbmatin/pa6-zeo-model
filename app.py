@@ -50,16 +50,16 @@ ax2 = ax1.twinx()
 ax1.plot(X_seq, model_u.predict(X_seq), color='red', label='UTS (Strength)', linewidth=2)
 ax1.plot(X_seq, model_h.predict(X_seq), color='blue', linestyle='--', label='Hardness')
 
-# Plot data points on curves (model predictions at each zeolite %)
-ax1.scatter(X.flatten(), model_u.predict(X).flatten(), color='red', zorder=5, s=60, edgecolors='black', linewidths=0.7)
-ax1.scatter(X.flatten(), model_h.predict(X).flatten(), color='blue', zorder=5, s=60, edgecolors='black', linewidths=0.7)
+# Plot experimental data points on curves
+ax1.scatter(X.flatten(), y_uts, color='red', zorder=5, s=50, edgecolors='black', linewidths=0.5)
+ax1.scatter(X.flatten(), y_hardness, color='blue', zorder=5, s=50, edgecolors='black', linewidths=0.5)
 
 ax1.set_ylabel("Mechanical Properties (MPa / Shore D)")
 ax1.set_xlabel("Zeolite Content (%)")
 
 X_seq_w = np.linspace(0, 55, 100).reshape(-1, 1)
 ax2.plot(X_seq_w, model_w.predict(X_seq_w), color='green', label='Wear Rate', linewidth=3)
-ax2.scatter(X_wear.flatten(), model_w.predict(X_wear).flatten(), color='green', zorder=5, s=60, edgecolors='black', linewidths=0.7)
+ax2.scatter(X_wear.flatten(), y_wear, color='green', zorder=5, s=50, edgecolors='black', linewidths=0.5)
 ax2.set_ylabel("Wear Rate ($10^{-9} mm^3/Nm$)", color='green')
 
 ax1.axvspan(20, 40, color='yellow', alpha=0.2, label='Optimal Performance Window')
