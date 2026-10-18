@@ -1,66 +1,53 @@
-**Predictive Modeling for Zeolite-Filled PA6 Composites**
+# PA6–Zeolite Property Explorer
 
-**Overview:**
-This repository contains a data-driven predictive model designed to estimate the mechanical and tribological performance of Polyamide-6 (PA6) composites reinforced with natural zeolite.
+An experimental-data explorer and **exploratory** predictive-modelling dashboard for PA6 composites filled with natural zeolite. The Streamlit application compares conventional quadratic regression with Support Vector Regression (SVR).
 
-The goal of this project is to provide a Digital Twin for material design, allowing researchers to predict properties like Tensile Strength and Wear Rate without the need for exhaustive and expensive laboratory testing.
+**Live app:** https://pa6-zeo-model.streamlit.app/
 
-**Key Predictions:**
+## Predictions and measured ranges
 
-Shore D Hardness: Modeling the monotonic stiffening effect of ceramic fillers.
+| Property | Measured zeolite contents (wt%) | Default model | Notes |
+|---|---|---|---|
+| Shore D hardness | 0, 20, 40, 50, 60, 70 | Quadratic regression | 10 indents at each composition |
+| Ultimate tensile strength | 0, 20, 40, 50, 60 | RBF-SVR with fixed parameters | Retained valid tensile specimens: n = 2, 3, 3, 3, 3 |
+| Steel-ball counterface specific wear | 0, 20, 40, 50 | Linear SVR on log(wear rate) | Both 5000 m and 7500 m tests are represented |
 
-Ultimate Tensile Strength (UTS): Predicting the non-monotonic peak performance loading.
+The sliding wear values refer to the **steel-ball counterface**, **not** the wear of the PA6 composite specimen.
 
-Specific Wear Rate: Mapping the transition from adhesive to abrasive wear mechanisms.
+## Validation
 
-**Scientific Context:**
+- **Hardness and tensile:** leave-one-composition-out cross-validation, applied to the composition means.
+- **Counterface wear:** leave-one-composition-out *grouped* cross-validation: the 5000 m and 7500 m records for a composition are both withheld in the same fold.
+- Reported RMSE, MAE and R² use held-out predictions. Ordinary training fit is not described as prediction accuracy.
+- SVR hyperparameters are fixed and documented in `app.py`, as explored during a pilot study. Model and hyperparameter choices have been explored on these same small data, so the dashboard is **not independently validated**, and is **not** a digital twin.
 
-This model is based on experimental data from the manuscript:
+## Important limitations
 
-"Tribological Behaviour of Zeolite Filled PA6 Composites" > Authors: Matin, S.B., et al.
+1. The steel ball was modelled using **nominal 8 mm diameter** and **10 N normal force**; the ball size needs checking against original laboratory records. The wear-rate values should remain provisional until this is verified.
+2. The eight steel-ball scar diameters are historical optical measurements from thesis Table 4.1; the calibrated TIFF images were used for qualitative auditing, not to replace them.
+3. At 70 wt% zeolite a tensile-shaped specimen could be molded and used for hardness testing, but a suitable tribometer disc could not be produced. Tensile strength was not reported at 70 wt%.
+4. The code does not extrapolate beyond each property's tested zeolite range. Values between compositions are modelled *interpolations* that need experimental verification.
+5. The data are very small and some tests were excluded because of known grip-tightening errors. The results do not establish an experimentally validated optimum composition.
 
-**Key Finding:** The study identifies an "Optimal Performance Window" between 20 wt% and 40 wt% zeolite loading, where the composite achieves maximum structural integrity and balanced wear resistance.
+## Run locally
 
-**Technical Stack:**
+```bash
+git clone https://github.com/sbmatin/pa6-zeo-model.git
+cd pa6-zeo-model
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-Language: Python 3.x
+## Files
 
-Modeling: Scikit-Learn (Polynomial Regression)
+- `app.py` — data, model definitions, cross-validation and dashboard.
+- `requirements.txt` — deployment dependencies.
+- `README.md` — documentation and scientific limitations.
 
-Deployment: Streamlit Cloud
+## Source and citation
 
-Visualization: Matplotlib / Seaborn
+Laboratory data: Saddam Bin Matin, Master's thesis (University of Miskolc), original hardness and tensile spreadsheets, and thesis Table 4.1 (steel-ball wear scar diameters).
 
-Why Polynomial Regression?
-Material properties in polymer composites often exhibit non-linear behaviors (e.g., strength increases with filler loading until agglomeration causes a sharp drop). We utilized 2nd and 3rd-degree polynomial features to accurately capture these performance peaks which standard linear models would fail to identify.
+Related preprint: https://doi.org/10.5281/zenodo.18496332
 
-**How to Use**
-
-1. Interactive Web Dashboard
-The easiest way to explore the model is through the live Streamlit Dashboard. Use the slider to select a Zeolite weight percentage and view real-time property predictions.
-
-2. Local Installation
-To run the model locally, follow these steps:
-
-Clone the repository: git clone https://github.com/sbmatin/pa6-zeo-model.git
-
-Install dependencies: pip install -r requirements.txt
-
-Run the app: streamlit run app.py
-
-**Data & Validation:**
-The model was validated against experimental results using the Coefficient of Determination ($R^2$):
-- **Hardness Accuracy:** 98.90% ($R^2 = 0.9890$)
-- **UTS Accuracy:** 90.28% ($R^2 = 0.9028$)
-
-This validation proves the model is a reliable tool for predicting composite behavior within the 0-60 wt% zeolite loading range.
-
-**Contact & Citation:**
-If you use this model in your research, please cite the original paper: Matin, S. B. (2026). TRIBOLOGICAL BEHAVIOUR OF ZEOLITE FILLED POLYAMIDE-6 COMPOSITES. Zenodo. https://doi.org/10.5281/zenodo.18215181
-
-Developed by: SADDAM BIN MATIN
-
-Connect with me on linkedin.com/in/saddam-bin-matin
-
-
-
+Developer: **Saddam Bin Matin** · [LinkedIn](https://linkedin.com/in/saddam-bin-matin)
